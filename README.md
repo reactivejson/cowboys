@@ -1,0 +1,2 @@
+# cowboys
+Distributed cowboys game
