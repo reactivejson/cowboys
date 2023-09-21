@@ -8,7 +8,11 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/reactivejson/cowboys)](https://goreportcard.com/report/github.com/reactivejson/cowboys)
 ![](https://img.shields.io/github/license/reactivejson/cowboys.svg)
 
-Go implementation of Distributed cowboys shootout game
+Go implementation of Distributed cowboys shootout game.
+You can run the game in two ways:
+
+ - You can run this game using docker compose where we have a master to orchestrate the game and each player will run in it's own container.
+ - You can run this game using Kubernetes platform with helm
 
 ### Project layout
 
