@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{template "master.name" .}}
+  labels:
+{{ include "master.labels.standard" . | indent 4}}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+{{ include "master.app" . | indent 6}}
+  template:
+    metadata:
+      labels:
+{{ include "master.app" . | indent 8}}
+    spec:
+      containers:
+        - name: master
+          image: {{.Values.registry}}/master:{{.Chart.Version}}
+          command:
+            - master
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: ":{{.Values.metricsPort}}"
+            - name: REDIS_ADDR
+              value: ":{{.Values.redisAddr}}"
+            - name: COMPETITORS
+              value: ":{{.Values.competitors}}"
+            - name: LOGGING_LEVEL
+              value: {{.Values.loggingLevel  | quote }}
+            - name: TRACING_ENABLED
+              value: {{ .Values.tracing.enabled | quote }}
+            - name: METRICS_ADDR
+              value: ":{{.Values.metricsPort}}"
+
+{{ include "neohelperchart.lifecycle-definitions" . | indent 10 }}
+          resources:
+{{ toYaml .Values.resources | indent 14 }}
+      affinity:
+{{ include "neohelperchart.anti-affinity-definitions" . | indent 8 }}

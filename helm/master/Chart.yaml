@@ -1,0 +1,9 @@
+apiVersion: v1
+name: master
+version: 0.0.0-snapshot # to be replaced during jenkins build
+description: Distributed master
+keywords:
+  - master
+maintainers:
+  - name: Mohamed Aly
+    email: bouhanana@outlook.fr

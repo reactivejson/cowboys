@@ -1,0 +1,24 @@
+{
+  "players": [
+    {
+      "name": "p1",
+      "health": 10,
+      "damage": 3
+    },
+    {
+      "name": "p2",
+      "health": 5,
+      "damage": 4
+    },
+    {
+      "name": "p3",
+      "health": 10,
+      "damage": 1
+    },
+    {
+      "name": "p4",
+      "health": 7,
+      "damage": 2
+    }
+  ]
+}
