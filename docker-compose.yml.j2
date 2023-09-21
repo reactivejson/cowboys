@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  redis:
+    image: registry1-docker-io.repo.cci.nokia.net/bitnami/redis:latest
+    restart: always
+    healthcheck:
+      test:  [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+    ports:
+      - '6379:6379'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+  master:
+    image: master
+    restart: always
+    ports:
+      - '8080:8080'
+    environment:
+      PORT: ":8080"
+      REDIS_ADDR: "redis:6379"
+      COMPETITORS: {{players|length}}
+    depends_on:
+      redis:
+        condition: service_healthy
+  {% for player in players %}
+  player-{{player.name}}:
+    image: player
+    restart: on-failure
+    environment:
+      MASTER_ADDR: "http://master:8080"
+      REDIS_ADDR: "redis:6379"
+      NAME: {{player.name}}
+      HEALTH: {{player.health}}
+      DAMAGE: {{player.damage}}
+    depends_on:
+      master:
+        condition: service_started
+  {% endfor %}
+
+  everything:
+    image: zablvit/zero@sha256:7037ea9215d458532f7ea171c7b65eea7e2c7659f3b0667c70fa48a13ad69a1f
+    depends_on:
+      redis:
+        condition: service_healthy
+      {% for player in players %}
+      player-{{player.name}}:
+        condition: service_started
+      {% endfor %}

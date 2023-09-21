@@ -1,0 +1,9 @@
+apiVersion: v1
+name: player
+version: 0.0.0-snapshot # to be replaced during jenkins build
+description: Distributed player
+keywords:
+  - player
+maintainers:
+  - name: Mohamed Aly
+    email: bouhanana@outlook.fr

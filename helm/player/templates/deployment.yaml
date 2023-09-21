@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{template "player.name" .}}
+  labels:
+{{ include "player.labels.standard" . | indent 4}}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+{{ include "player.app" . | indent 6}}
+  template:
+    metadata:
+      labels:
+{{ include "player.app" . | indent 8}}
+    spec:
+      containers:
+{{- range $player := .Values.players }}
+        - name: player-{{ $player.name | quote }}
+          image: {{.Values.registry}}/player:{{.Chart.Version}}
+          command:
+            - player
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: REDIS_ADDR
+              value: ":{{.Values.redisAddr}}"
+            - name: MASTER_ADDR
+              value: ":{{.Values.masterAddr}}"
+            - name: NAME
+              value: {{ $player.name | quote }}
+            - name: HEALTH
+              value: {{ $player.health | quote }}
+            - name: DAMAGE
+              value: {{ $player.damage | quote }}
+            - name: TRACING_ENABLED
+              value: {{ .Values.tracing.enabled | quote }}
+            - name: METRICS_ADDR
+              value: ":{{.Values.metricsPort}}"
+
+{{ include "neohelperchart.lifecycle-definitions" . | indent 10 }}
+          resources:
+{{ toYaml .Values.resources | indent 14 }}
+{{- end }}
+      affinity:
+{{ include "neohelperchart.anti-affinity-definitions" . | indent 8 }}
