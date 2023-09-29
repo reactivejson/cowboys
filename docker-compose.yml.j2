@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   redis:
-    image: registry1-docker-io.repo.cci.nokia.net/bitnami/redis:latest
+    image: bitnami/redis:latest
     restart: always
     healthcheck:
       test:  [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
