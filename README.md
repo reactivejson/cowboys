@@ -19,7 +19,7 @@ You can run the game in two ways:
 This layout is following pattern:
 
 ```text
-merkleTree
+cowboys
 └───
     ├── .github
     │   └── workflows
