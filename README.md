@@ -9,6 +9,19 @@
 ![](https://img.shields.io/github/license/reactivejson/cowboys.svg)
 
 Go implementation of Distributed cowboys shootout game.
+Spec:
+- We have a set of cowboys.
+- Each cowboy has a unique name, health points and damage points.
+- Each cowboy runs in it’s own isolated process, workload or replica.
+- All communication between cowboys happen via your Redis MQ
+- Cowboys encounter starts at the same time in parallel. Each cowboys selects random target and shoots.
+- Subtract shooter damage points from target health points.
+- If target cowboy health points are 0 or lower, then target is dead.
+- Cowboys don’t shoot themselves and don’t shoot dead cowboys.
+- After the shot shooter sleeps for 1 second.
+- Last standing cowboy is the winner.
+Kubernetes, Helm, and  Docker-compose are used for container orchestration solution.
+
 You can run the game in two ways:
 
  - You can run this game using docker compose where we have a master to orchestrate the game and each player will run in it's own container.
